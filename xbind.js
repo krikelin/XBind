@@ -26,6 +26,7 @@ function xbind() {
 	this.binder = new XBind();
 	this.binder.refresh();
 }
+exports.xbind = xbind;
 /***
 XBind main class
 */
@@ -84,7 +85,7 @@ function XBind() {
 					// Append loading system
 			
 				} else {
-					var loading = document.getElementById(element.getAttribute("template")).getElementsByTagNameNS(xbind_ns, "error");
+					var loading = document.getElementById(element.getAttribute("template")).getElementsByTagName("error")[0];
 					element.innerHTML = loading.innerHTML;
 
 				}
@@ -95,8 +96,9 @@ function XBind() {
 		var path = link.getAttribute("href");
 		
 		// Append loading system
-		alert(element.getAttribute("template"));
-		var loading = document.getElementById(element.getAttribute("template")).getElementsByTagNameNS(xbind_ns, "loading");
+		
+		var loading = document.getElementById(element.getAttribute("template")).getElementsByTagName("loading")[0];
+		alert(loading.innerHTML);
 		element.innerHTML = loading.innerHTML;
 		xmlHttp.open("GET", path, true);
 		xmlHttp.send(null);
