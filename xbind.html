@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--
+X-Binding test
+-->
+<html xmlns="http://www.w3.org/TR/1999/XHTML" xmlns:xbind="http://segurify/">
+	<head>
+		<!--
+		All bindings are defined as a link tag with the rel xbind:binding.
+		
+		The binding applies to the underlying xml file and is connected by X-Path
+		-->
+		<link rel="xbinding" type="application/xml" href="news.xml" id="news" />
+		
+		<script src="xbind.js" type="text/javascript"></script>
+	</head> 
+	<xbind:shell style="display: none">
+		<xbind:template href="news.xml" id="article" type="text/html">  
+			<xbind:serie>
+				<article id="{{id}}">
+					<!--
+					Denotates a serie
+					-->
+					<h1>{{title}}</h1>
+					<datetime>{{@pubdate}}</datetime>
+					<text>{{text}}</text>
+					<author>{{author/first}} {{author/surname}}</author>
+				</article>
+			</xbind:serie>
+			<xbind:empty>
+				No articles
+			</xbind:empty>
+			<xbind:loading>
+				<!-- Show a loading bar -->
+				<span>Loading</span>
+			</xbind:loading>
+		</xbind:template>
+		
+	</xbind:shell>
+	<body onload="xbind()">
+		<header>
+		<h3>My page</h3>
+		</header>
+		<!-- 
+		The X-binding is a binding to the div
+		All bindings goes from the xbind://{{ link identifier }}/{{X-Path of the element}}
+		All declarations is mentioned as {{ X-Path starting from the current row }}.
+		
+		-->
+		<div binding="xbind://news/article" template="article">
+			
+		</div>
+	</body>
+</html>
+				
