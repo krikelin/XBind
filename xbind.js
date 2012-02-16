@@ -98,7 +98,7 @@ function XBind() {
 		// Append loading system
 		
 		var loading = document.getElementById(element.getAttribute("template")).getElementsByTagName("loading")[0];
-		alert(loading.innerHTML);
+	//	alert(loading.innerHTML);
 		element.innerHTML = loading.innerHTML;
 		xmlHttp.open("GET", path, true);
 		xmlHttp.send(null);
@@ -116,7 +116,7 @@ function XBind() {
 		var startTag = "{{";
 		var endTag = "}}";
 			var binding_uri = element.getAttribute("binding");
-			alert(xml);
+	//		alert(xml);
 			// Parse the uri token and replicate it
 			if(binding_uri.indexOf("xbind://") != 0) {
 				throw "Only XBIND protocol is supported for now";
@@ -131,8 +131,8 @@ function XBind() {
 			
 			var nodes = document.evaluate( XPath, xml, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
 			console.log(XPath);
-			alert("A");
-			alert(nodes);
+	//		alert("A");
+		//	alert(nodes);
 			console.log(nodes);
 			var innerContent = ""; // Inner content
 			var template = document.getElementById(element.getAttribute("template"));
