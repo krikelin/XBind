@@ -1,6 +1,5 @@
 /**********************************************
 XHTML binding language. 
-(
 Copyright (C) 2012 Alexander Forselius
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -129,6 +128,7 @@ function XBind() {
 			//alert(XPath);
 			
 			var nodes = document.evaluate( XPath, xml, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
+			console.log(XPath);
 			alert("A");
 			alert(nodes);
 			console.log(nodes);
@@ -137,6 +137,8 @@ function XBind() {
 			
 			var repeaterContent = template.getElementsByTagName("serie")[0];
 			console.log(repeaterContent);
+			console.log(nodes.snapshotLength);
+	
 			/*
 			Repeat through the collection and serialize the object
 			*/
