@@ -84,7 +84,8 @@ function XBind() {
 					bind(element, xml);
 					// Append loading system
 			
-				} else {
+				} else if(xmlHttp.status == 503) {
+					console.log(xmlHttp.status);
 					var loading = document.getElementById(element.getAttribute("template")).getElementsByTagName("error")[0];
 					element.innerHTML = loading.innerHTML;
 
@@ -101,6 +102,7 @@ function XBind() {
 	//	alert(loading.innerHTML);
 		element.innerHTML = loading.innerHTML;
 		xmlHttp.open("GET", path, true);
+		console.log(path);
 		xmlHttp.send(null);
 	};
 	this.startTag = "{{";
@@ -188,7 +190,7 @@ function XBind() {
 						
 							var item1 = query.snapshotItem(0);
 							console.log(item1);
-							console.log(this.startTag + str + this.endTag);
+							console.log(startTag + str + endTag);
 							html = html.replace(startTag + str + endTag, item1.textContent	);
 							console.log(html);
 						}
