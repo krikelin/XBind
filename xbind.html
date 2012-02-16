@@ -13,9 +13,9 @@ X-Binding test
 		
 		<script src="xbind.js" type="text/javascript"></script>
 	</head> 
-	<xbind:shell style="display: none">
-		<xbind:template href="news.xml" id="article" type="text/html">  
-			<xbind:serie>
+	<shell style="display: none">
+		<template href="news.xml" id="article" type="text/html">  
+			<serie>
 				<article id="{{id}}">
 					<!--
 					Denotates a serie
@@ -25,17 +25,18 @@ X-Binding test
 					<text>{{text}}</text>
 					<author>{{author/first}} {{author/surname}}</author>
 				</article>
-			</xbind:serie>
-			<xbind:empty>
+			</serie>
+			<empty>
 				No articles
-			</xbind:empty>
-			<xbind:loading>
+			</empty>
+			<loading>
 				<!-- Show a loading bar -->
 				<span>Loading</span>
-			</xbind:loading>
-		</xbind:template>
-		
-	</xbind:shell>
+			</loading>
+			<error>
+			</error>
+		</template>
+	</shell>
 	<body onload="xbind()">
 		<header>
 		<h3>My page</h3>
