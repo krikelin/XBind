@@ -112,7 +112,8 @@ function XBind() {
 	@param xml The responseXML to bind to
 	*/
 	this.bind = function(element, xml) {
-		try {
+		var startTag = "{{";
+		var endTag = "}}";
 			var binding_uri = element.getAttribute("binding");
 			alert(xml);
 			// Parse the uri token and replicate it
@@ -121,10 +122,10 @@ function XBind() {
 			}
 			
 			// Otherwise try
-			var XPath = binding_uri.replace("xbind://","");
+			var XPath = binding_uri.replace("xbind:","");
 			
 			// Get the id of the link that are responsible for the content binding
-			XPath = "//"+XPath.split("/", 2)[1];
+		//	XPath = "//"+XPath.split("/", 2)[1];
 			//alert(XPath);
 			
 			var nodes = document.evaluate( XPath, xml, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
@@ -133,40 +134,73 @@ function XBind() {
 			console.log(nodes);
 			var innerContent = ""; // Inner content
 			var template = document.getElementById(element.getAttribute("template"));
-			var repeaterContent = template.getElementsByTagNameNS(xbind_ns, "serie");
-			alert(repeaterContent.length);
-			console.log(template);
+			
+			var repeaterContent = template.getElementsByTagName("serie")[0];
+			console.log(repeaterContent);
 			/*
 			Repeat through the collection and serialize the object
 			*/
 			for (var l = 0; l < nodes.snapshotLength; l++){
 				console.log(l);
+				
 				var html = repeaterContent.innerHTML; // Get innerHTML
 				var item = nodes.snapshotItem(l);
 				var c_index = 0; // Current index
 				// Get all {{ }}
 				console.log("C");
 				while(c_index < html.length) {
-					c_index = html.indexOf(this.startTag + 2);
-					var ending = html.indexOf(c_index, this.endTag);
-					var str = html.indexOf(c_index, this.endTag - c_index);
-					var str2 = str.trim(' ');
+					console.log(html);
+					console.log(startTag);
+					c_index = html.indexOf(startTag )  ;
+					console.log(c_index);
+					if(c_index == -1)
+						break;
+					else
+						c_index += startTag.length;
+					var ending = html.indexOf(endTag, c_index);
+					console.log(ending);
+					if(ending == -1){
+						throw "No end tag supplied to starting tag at "+ c_index;
+					}
+
+					var str = html.substring(c_index, ending);
+					console.log(str);
+					var str2 = str;
+					c_index = ending;
 						// Get the inner string
 						
-					/*
+						/*
 					Now parse the XQuery and replicate it
 					*/
-					var query = document.evaluate( XPath + "[" + l + "]/" + str2, xml, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
-					var item1 = query.snapshotItem(l);
-					html = html.replace(this.startTag + str + this.endTag, item1.nodeValue);
+					try{
+						console.log( XPath + "[" + l + "]/");
+						console.log(str2);
+						if(str2.indexOf("@") == 0) {
+							html = html.replace(startTag + str + endTag, item1.getAttribute(str2.replace("@","")));
+						} else {
+							var expression = XPath + "[" + (l+1) + "]" + (str2 != "" ? "/" + str2  : "");
+							console.log(expression);
+							var query = document.evaluate( expression, xml, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
+						
+							var item1 = query.snapshotItem(0);
+							console.log(item1);
+							console.log(this.startTag + str + this.endTag);
+							html = html.replace(startTag + str + endTag, item1.textContent	);
+							console.log(html);
+						}
+					}catch(e) {
+						throw e;
+						break;
+					}
+					c_index = ending;
+				
+					
 				}
 				innerContent += html; // Append the item to the list
 			
 				// Parse the underlying element
 			}	
 			element.innerHTML = innerContent;
-		} catch(e) {
-			throw e.message;
-		}
+		
 	}
 }
